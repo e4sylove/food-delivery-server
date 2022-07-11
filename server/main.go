@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"food_delivery/helpers"
 	"log"
 	"net/http"
@@ -24,8 +23,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(db)
 
 	if err := serve(db); err != nil {
 		log.Fatalln(err)
