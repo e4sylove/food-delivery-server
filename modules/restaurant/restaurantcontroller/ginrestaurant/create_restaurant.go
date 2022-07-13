@@ -23,6 +23,7 @@ func CreateRestaurant(db *gorm.DB) gin.HandlerFunc {
 
 			return
 		}
+
 		store := restaurantstorage.NewSQLStorage(db)
 		service := restaurantservice.NewCreateRestaurantService(store)
 

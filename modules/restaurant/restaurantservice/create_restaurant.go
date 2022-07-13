@@ -2,6 +2,7 @@ package restaurantservice
 
 import (
 	"context"
+	"errors"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
@@ -9,15 +10,19 @@ type CreateRestaurantStore interface {
 	Create(ctx context.Context, data *restaurantmodel.RestaurantCreate) error
 }
 
-type createRestauranService struct {
+type createRestaurantService struct {
 	store CreateRestaurantStore
 }
 
-func NewCreateRestaurantService(store CreateRestaurantStore) *createRestauranService {
-	return &createRestauranService{ store: store }
+func NewCreateRestaurantService(store CreateRestaurantStore) *createRestaurantService {
+	return &createRestaurantService{ store: store }
 }
 
-func (service *createRestauranService) CreateRestaurant(ctx context.Context, data *restaurantmodel.RestaurantCreate) error {
+func (service *createRestaurantService) CreateRestaurant(ctx context.Context, data *restaurantmodel.RestaurantCreate) error {
+	
+	if data.Name == "" {
+		return errors.New("restaurant name can't be blank")
+	}
 
 	err := service.store.Create(ctx, data)
 	return err
