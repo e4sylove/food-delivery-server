@@ -1,6 +1,7 @@
 package main
 
 import (
+	"food_delivery/components"
 	"food_delivery/helpers"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
 	"food_delivery/modules/restaurant/restaurantmodel"
@@ -38,9 +39,11 @@ func serve(db *gorm.DB) error {
 		})
 	})
 
+	appCtx := components.NewAppContext(db)
+
 	restaurants := r.Group("/restaurants")
 	{
-		restaurants.POST("", ginrestaurant.CreateRestaurant(db))
+		restaurants.POST("", ginrestaurant.CreateRestaurant(appCtx))
 
 		restaurants.GET("/:id", func(c *gin.Context) {
 			id, err := strconv.Atoi(c.Param("id"))
