@@ -2,6 +2,7 @@ package main
 
 import (
 	"food_delivery/helpers"
+	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
 	"food_delivery/modules/restaurant/restaurantmodel"
 	"log"
 	"net/http"
@@ -39,28 +40,7 @@ func serve(db *gorm.DB) error {
 
 	restaurants := r.Group("/restaurants")
 	{
-		restaurants.POST("", func(c *gin.Context) {
-			
-			var data restaurantmodel.Restaurant
-
-			if err := c.ShouldBind(&data); err != nil {
-				c.JSON(http.StatusBadRequest, map[string]interface{}{
-					"error": err.Error(),
-				})
-
-				return
-			}
-			
-			if err := db.Create(&data).Error; err != nil {
-				c.JSON(http.StatusBadRequest, map[string]interface{}{
-					"error": err.Error(),
-				})
-			
-				return
-			}
-			
-			c.JSON(http.StatusOK, data)
-		})
+		restaurants.POST("", ginrestaurant.CreateRestaurant(db))
 
 		restaurants.GET("/:id", func(c *gin.Context) {
 			id, err := strconv.Atoi(c.Param("id"))
