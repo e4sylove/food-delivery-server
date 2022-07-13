@@ -118,6 +118,58 @@ func serve(db *gorm.DB) error {
 			
 			c.JSON(http.StatusOK, data)
 		})
+
+		restaurants.PATCH("/:id", func(c *gin.Context) {
+			id, err := strconv.Atoi(c.Param("id"))
+			
+			if err != nil {
+				c.JSON(http.StatusBadRequest, map[string]interface{}{
+					"error": err.Error(),
+				})
+			}
+
+			var data restaurantmodel.RestaurantUpdate
+
+			if err := c.ShouldBind(&data); err != nil {
+				c.JSON(http.StatusBadRequest, map[string]interface{}{
+					"error": err.Error(),
+				})
+
+				return
+			}
+
+			if err := db.Where("id = ?", id).Updates(&data).Error; err != nil {
+				c.JSON(http.StatusBadRequest, map[string]interface{}{
+					"error": err.Error(),
+				})
+
+				return
+			}
+
+			c.JSON(http.StatusOK, data)
+		})
+
+		restaurants.DELETE("/:id", func(c *gin.Context) {
+			id, err := strconv.Atoi(c.Param("id"))
+
+			if err != nil {
+				c.JSON(http.StatusBadRequest, map[string]interface{}{
+					"error": err.Error(),
+				})
+			}
+
+			if err := db.Table(restaurantmodel.Restaurant{}.TableName()).
+			Where("id = ?", id).
+			Delete(nil).Error; err != nil {
+				c.JSON(http.StatusBadRequest, map[string]interface{}{
+					"error": err.Error(),
+				})
+
+				return
+			}
+				
+			c.JSON(http.StatusOK, gin.H{"status": 1})
+		})
 	}
 
 	return r.Run(`:8080`);
