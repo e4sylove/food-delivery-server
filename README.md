@@ -7,9 +7,3 @@ MODULES:
 - Orders
 - Foods
 - Authentication
-
-
-REQUIREMENTS:
-
-- Restaurants:
-    + 
