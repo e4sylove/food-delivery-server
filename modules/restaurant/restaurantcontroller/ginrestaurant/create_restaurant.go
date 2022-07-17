@@ -29,7 +29,7 @@ func CreateRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 		service := restaurantservice.NewCreateRestaurantService(store)
 
 		if err := service.CreateRestaurant(c.Request.Context(), &data); err != nil {
-			c.JSON(http.StatusOK, map[string]interface{}{
+			c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"error": err.Error(),
 			})
 

@@ -4,10 +4,8 @@ import (
 	"food_delivery/components"
 	"food_delivery/helpers"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
-	"food_delivery/modules/restaurant/restaurantmodel"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -44,34 +42,10 @@ func serve(db *gorm.DB) error {
 	restaurants := r.Group("/restaurants")
 	{
 		restaurants.POST("", ginrestaurant.CreateRestaurant(appCtx))
-
 		restaurants.GET("/:id", ginrestaurant.GetRestaurant(appCtx))
-
 		restaurants.GET("", ginrestaurant.ListRestaurant(appCtx))
-
 		restaurants.PATCH("/:id", ginrestaurant.UpdateRestaurant(appCtx))
-
-		restaurants.DELETE("/:id", func(c *gin.Context) {
-			id, err := strconv.Atoi(c.Param("id"))
-
-			if err != nil {
-				c.JSON(http.StatusBadRequest, map[string]interface{}{
-					"error": err.Error(),
-				})
-			}
-
-			if err := db.Table(restaurantmodel.Restaurant{}.TableName()).
-			Where("id = ?", id).
-			Delete(nil).Error; err != nil {
-				c.JSON(http.StatusBadRequest, map[string]interface{}{
-					"error": err.Error(),
-				})
-
-				return
-			}
-				
-			c.JSON(http.StatusOK, gin.H{"status": 1})
-		})
+		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
 	}
 
 	return r.Run(`:8080`);

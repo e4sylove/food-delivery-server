@@ -42,7 +42,7 @@ func UpdateRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 		service := restaurantservice.NewUpdateRestaurantService(store)
 
 		if err := service.UpdateRestaurant(c.Request.Context(), id, &data); err != nil {
-			c.JSON(http.StatusBadRequest, map[string]interface{}{
+			c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"error": err.Error(),
 			})
 

@@ -42,7 +42,7 @@ func ListRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 		result, err := service.ListRestaurant(c.Request.Context(), &filter, &paging) 
 		
 		if err != nil {
-			c.JSON(http.StatusOK, map[string]interface{}{
+			c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"error": err.Error(),
 			})
 
