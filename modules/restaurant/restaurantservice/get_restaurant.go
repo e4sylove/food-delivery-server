@@ -2,6 +2,7 @@ package restaurantservice
 
 import (
 	"context"
+	"errors"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
@@ -25,5 +26,13 @@ func (service *getRestaurantService) GetRestaurantService(ctx context.Context, i
 	
 	data, err := service.store.FindRestaurantByCondition(ctx, map[string]interface{}{"id": id})
 
+	if err != nil {
+		return nil, err
+	}
+
+	if data.Status == 0 {
+		return nil, errors.New("data has been deleted")
+	}
+	
 	return data, err
 }
