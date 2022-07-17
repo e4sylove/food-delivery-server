@@ -6,7 +6,7 @@ import (
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
-func (storage *SQLStorage) ListDataByCondition(
+func (storage *SQLStorage) ListRestaurantByCondition(
 	ctx context.Context,
 	conditions map[string]interface{},
 	filter *restaurantmodel.Filter,

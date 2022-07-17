@@ -7,7 +7,7 @@ import (
 )
 
 type UpdateRestaurantStore interface {
-	FindDataByCondition(
+	FindRestaurantByCondition(
 		ctx context.Context,
 		conditions map[string]interface{},
 		moreKeys ...string,
@@ -30,7 +30,7 @@ func NewUpdateRestaurantService (store UpdateRestaurantStore) *updateRestaurantS
 
 func (service *updateRestaurantService) UpdateRestaurant(ctx context.Context, id int, data *restaurantmodel.RestaurantUpdate) (error) {
 
-	oldData, err := service.store.FindDataByCondition(ctx, map[string]interface{}{"id": id})
+	oldData, err := service.store.FindRestaurantByCondition(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {
 		return err

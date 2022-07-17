@@ -5,7 +5,9 @@ import (
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
-func (storage *SQLStorage) Create(ctx context.Context, data *restaurantmodel.RestaurantCreate) error {
+func (storage *SQLStorage) Create(
+	ctx context.Context, 
+	data *restaurantmodel.RestaurantCreate) error {
 	
 	db := storage.db
 
