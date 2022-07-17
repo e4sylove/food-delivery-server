@@ -29,6 +29,14 @@ func GetRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 		
 		result, err := serivce.GetRestaurantService(c.Request.Context(), id)
 		
+		if err != nil {
+			c.JSON(http.StatusOK, map[string]interface{}{
+				"error": err.Error(),
+			})
+
+			return
+		}
+
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(result))
 	}
 }
