@@ -31,7 +31,7 @@ func DeleteRestaurant (ctx components.AppContext) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"error": err.Error(),
 			})
-
+			
 			return
 		}
 

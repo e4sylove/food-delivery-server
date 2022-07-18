@@ -2,7 +2,10 @@ package restaurantstorage
 
 import (
 	"context"
+	"food_delivery/modules/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
+
+	"gorm.io/gorm"
 )
 
 
@@ -20,7 +23,11 @@ func (storage *SQLStorage) FindRestaurantByCondition(
 	}
 
 	if err := db.Where(conditions).First(&result).Error; err != nil {
-		return nil, err
+		if err == gorm.ErrRecordNotFound {
+			return nil, common.RecordNotFound 
+		}
+
+		return nil, common.ErrDB(err)
 	}
 
 	return &result, nil

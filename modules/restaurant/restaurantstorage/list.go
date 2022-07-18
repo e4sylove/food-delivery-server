@@ -30,7 +30,7 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 	}
 	
 	if err := db.Count(&paging.Total).Error; err != nil {
-		return nil, err
+		return nil, common.ErrDB(err)
 	}
 
 	if err := db.
@@ -38,11 +38,11 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 		Limit(paging.Limit).
 		Order("id DESC").
 		Find(&result).Error; err != nil {
-			return nil, err
+			return nil, common.ErrDB(err)
 		}
 
 	if err := db.Find(&result).Error; err != nil {
-		return nil, err
+		return nil, common.ErrDB(err)
 	}
 	 
 	return result, nil
