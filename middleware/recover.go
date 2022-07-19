@@ -17,11 +17,12 @@ func Recover(ctx components.AppContext) gin.HandlerFunc {
 				if appError, ok := err.(*common.AppError); ok {
 					c.AbortWithStatusJSON(appError.StatusCode, appError)
 
-					return
+					panic(err)
 				}
 
 				appError := common.ErrInternal(err.(error))
 				c.AbortWithStatusJSON(appError.StatusCode, appError)
+				panic(err)
 			}
 		}()
 		
