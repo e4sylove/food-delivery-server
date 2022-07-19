@@ -3,6 +3,7 @@ package main
 import (
 	"food_delivery/components"
 	"food_delivery/helpers"
+	"food_delivery/middleware"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
 	"log"
 	"net/http"
@@ -28,16 +29,17 @@ func main() {
 
 
 func serve(db *gorm.DB) error {
-	
+	appCtx := components.NewAppContext(db)
+
 	r := gin.Default()
+
+	r.Use(middleware.Recover(appCtx))
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
-
-	appCtx := components.NewAppContext(db)
 
 	restaurants := r.Group("/restaurants")
 	{
