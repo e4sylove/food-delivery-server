@@ -14,6 +14,6 @@ func NewAppContext(db *gorm.DB) *appCtx {
 	return &appCtx{ db: db }
 }
 
-func (ctx *appCtx) GetMainDBConnection() *gorm.DB {
+func (ctx *appCtx) GetMySQLConnection() *gorm.DB {
 	return ctx.db
 }
