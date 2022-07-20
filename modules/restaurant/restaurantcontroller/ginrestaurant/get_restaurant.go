@@ -22,7 +22,7 @@ func GetRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		store := restaurantstorage.NewSQLStorage(appCtx.GetMainDBConnection())
+		store := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
 		serivce := restaurantservice.NewGetRestaurantService(store)
 		
 		result, err := serivce.GetRestaurantService(c.Request.Context(), id)

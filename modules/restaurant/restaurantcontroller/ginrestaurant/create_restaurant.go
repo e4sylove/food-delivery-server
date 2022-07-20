@@ -25,7 +25,7 @@ func CreateRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 			return
 		}
 		
-		store := restaurantstorage.NewSQLStorage(appCtx.GetMainDBConnection())
+		store := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
 		service := restaurantservice.NewCreateRestaurantService(store)
 
 		if err := service.CreateRestaurant(c.Request.Context(), &data); err != nil {

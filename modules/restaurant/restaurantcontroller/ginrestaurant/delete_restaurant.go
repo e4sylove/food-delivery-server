@@ -24,7 +24,7 @@ func DeleteRestaurant (ctx components.AppContext) gin.HandlerFunc {
 			return
 		}
 
-		storage := restaurantstorage.NewSQLStorage(ctx.GetMainDBConnection())
+		storage := restaurantstorage.NewSQLStorage(ctx.GetMySQLConnection())
 		service := restaurantservice.NewDeleteRestaurantService(storage)
 
 		if err := service.DeleteRestaurant(c.Request.Context(), id); err != nil {

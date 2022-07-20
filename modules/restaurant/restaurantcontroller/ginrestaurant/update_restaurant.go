@@ -38,7 +38,7 @@ func UpdateRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 			return
 		}
 
-		store := restaurantstorage.NewSQLStorage(appCtx.GetMainDBConnection())
+		store := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
 		service := restaurantservice.NewUpdateRestaurantService(store)
 
 		if err := service.UpdateRestaurant(c.Request.Context(), id, &data); err != nil {

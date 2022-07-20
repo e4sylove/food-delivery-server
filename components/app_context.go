@@ -3,7 +3,7 @@ package components
 import "gorm.io/gorm"
 
 type AppContext interface {
-	GetMainDBConnection() *gorm.DB
+	GetMySQLConnection() *gorm.DB
 }
 
 type appCtx struct {

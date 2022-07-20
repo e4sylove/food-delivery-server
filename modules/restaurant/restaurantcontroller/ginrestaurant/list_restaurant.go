@@ -36,7 +36,7 @@ func ListRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 
 		paging.Fulfill()
 		
-		storage := restaurantstorage.NewSQLStorage(appCtx.GetMainDBConnection())
+		storage := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
 		service := restaurantservice.NewListRestaurantService(storage)
 
 		result, err := service.ListRestaurant(c.Request.Context(), &filter, &paging) 
