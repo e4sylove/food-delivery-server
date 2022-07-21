@@ -9,3 +9,9 @@ type SQLModel struct {
 	CreatedAt *time.Time `json:"created_at" gorm:"created_at;"`
 	UpdatedAt *time.Time `json:"updated_at" gorm:"updated_at;"`
 }
+
+
+func (m *SQLModel) GenUID(dbType int) {
+	uid := NewUID(uint32(m.Id), dbType, 1)
+	m.FakeId = &uid
+}

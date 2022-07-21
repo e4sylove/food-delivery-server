@@ -7,12 +7,12 @@ import (
 )
 
 type UID struct {
-	localID int32
+	localID uint32
 	objectType int
 	shardID int32
 }
 
-func NewUID9(localID int32, objType int, shardID int32) UID {
+func NewUID(localID uint32, objType int, shardID int32) UID {
 	return UID{
 		localID: localID,
 		objectType: objType,
@@ -25,7 +25,7 @@ func (uid UID) String() string {
 	return base58.Encode([]byte(fmt.Sprintf("%v", val)))
 }
 
-func (uid UID) GetLocalID() int32 {
+func (uid UID) GetLocalID() uint32 {
 	return uid.localID
 }
 
