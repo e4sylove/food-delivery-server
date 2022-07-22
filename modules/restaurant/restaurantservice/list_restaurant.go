@@ -31,5 +31,9 @@ func (service *listRestaurantService) ListRestaurant(
 
 	result, err := service.store.ListRestaurantByCondition(ctx, nil, filter, paging)
 
-	return result, err
+	if err != nil {
+		return nil, common.ErrCannotListEntity(restaurantmodel.EntityName, err)
+	}
+
+	return result, nil
 }

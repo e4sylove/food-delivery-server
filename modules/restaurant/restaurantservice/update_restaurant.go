@@ -2,7 +2,7 @@ package restaurantservice
 
 import (
 	"context"
-	"errors"
+	"food_delivery/modules/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
@@ -33,15 +33,15 @@ func (service *updateRestaurantService) UpdateRestaurant(ctx context.Context, id
 	oldData, err := service.store.FindRestaurantByCondition(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {
-		return err
+		return common.ErrCannotGetEntity(restaurantmodel.EntityName, err)
 	}
 
 	if oldData.Status == 0 {
-		return errors.New("data has been deleted")
+		return common.ErrEntityDeleted(restaurantmodel.EntityName, nil)
 	}
 
 	if err := service.store.UpdateData(ctx, id, data); err != nil {
-		return err
+		return common.ErrCannotUpdateEntity(restaurantmodel.EntityName, err)
 	}
 
 	return nil
