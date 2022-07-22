@@ -18,22 +18,14 @@ func CreateRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 		var data restaurantmodel.RestaurantCreate
 
 		if err := c.ShouldBind(&data); err != nil {
-			c.JSON(http.StatusOK, map[string]interface{}{
-				"error": err.Error(),
-			})
-
-			return
+			panic(common.ErrInvalidRequest(err))
 		}
 		
 		store := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
 		service := restaurantservice.NewCreateRestaurantService(store)
 
 		if err := service.CreateRestaurant(c.Request.Context(), &data); err != nil {
-			c.JSON(http.StatusInternalServerError, map[string]interface{}{
-				"error": err.Error(),
-			})
-
-			return
+			panic(err)
 		}
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))

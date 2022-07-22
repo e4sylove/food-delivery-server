@@ -2,6 +2,7 @@ package ginrestaurant
 
 import (
 	"food_delivery/components"
+	"food_delivery/modules/common"
 	"food_delivery/modules/restaurant/restaurantservice"
 	"food_delivery/modules/restaurant/restaurantstorage"
 	"net/http"
@@ -17,22 +18,14 @@ func DeleteRestaurant (ctx components.AppContext) gin.HandlerFunc {
 		id, err := strconv.Atoi(c.Param("id"))
 		
 		if err != nil {
-			c.JSON(http.StatusBadRequest, map[string]interface{}{
-				"error": err.Error(),
-			})
-
-			return
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		storage := restaurantstorage.NewSQLStorage(ctx.GetMySQLConnection())
 		service := restaurantservice.NewDeleteRestaurantService(storage)
 
 		if err := service.DeleteRestaurant(c.Request.Context(), id); err != nil {
-			c.JSON(http.StatusInternalServerError, map[string]interface{}{
-				"error": err.Error(),
-			})
-			
-			return
+			panic(err)
 		}
 
 		c.JSON(http.StatusOK, map[string]interface{}{
