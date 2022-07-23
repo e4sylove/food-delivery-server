@@ -5,8 +5,8 @@ import (
 	"food_delivery/helpers"
 	"food_delivery/middleware"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
+	"food_delivery/modules/user/usercontroller/ginuser"
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -35,11 +35,7 @@ func serve(db *gorm.DB) error {
 
 	r.Use(middleware.Recover(appCtx))
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	r.POST("/register", ginuser.Register(appCtx))
 
 	restaurants := r.Group("/restaurants")
 	{

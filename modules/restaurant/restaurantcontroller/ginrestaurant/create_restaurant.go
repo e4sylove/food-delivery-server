@@ -15,13 +15,16 @@ import (
 func CreateRestaurant(appCtx components.AppContext) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
+
+		db := appCtx.GetMySQLConnection()
+		
 		var data restaurantmodel.RestaurantCreate
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
 		
-		store := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
+		store := restaurantstorage.NewSQLStorage(db)
 		service := restaurantservice.NewCreateRestaurantService(store)
 
 		if err := service.CreateRestaurant(c.Request.Context(), &data); err != nil {
