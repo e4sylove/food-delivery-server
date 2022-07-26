@@ -51,6 +51,10 @@ func (UserCreate) TableName() string {
 	return User{}.TableName()
 }
 
+func (u *UserCreate) Mask(isAdmin bool) {
+	u.GenUID(common.DbTypeUser)
+}
+
 type UserLogin struct {
 	Email    string `json:"email" form:"email" gorm:"column:email;"`
 	Password string `json:"password" form:"password" gorm:"column:password;"`
@@ -59,7 +63,6 @@ type UserLogin struct {
 func (UserLogin) TableName() string {
 	return User{}.TableName()
 }
-
 
 
 var (
