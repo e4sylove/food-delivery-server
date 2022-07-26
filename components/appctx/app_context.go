@@ -1,4 +1,4 @@
-package components
+package appctx
 
 import "gorm.io/gorm"
 

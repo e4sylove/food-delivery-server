@@ -1,7 +1,7 @@
 package ginrestaurant
 
 import (
-	"food_delivery/components"
+	"food_delivery/components/appctx"
 	"food_delivery/modules/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 	"food_delivery/modules/restaurant/restaurantservice"
@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ListRestaurant(appCtx components.AppContext) gin.HandlerFunc {
+func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		
 		var filter restaurantmodel.Filter

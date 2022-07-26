@@ -1,4 +1,4 @@
-package components
+package hasher
 
 import (
 	"crypto/md5"

@@ -1,7 +1,7 @@
 package ginrestaurant
 
 import (
-	"food_delivery/components"
+	"food_delivery/components/appctx"
 	"food_delivery/modules/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 	"food_delivery/modules/restaurant/restaurantservice"
@@ -14,7 +14,7 @@ import (
 
 
 
-func UpdateRestaurant(appCtx components.AppContext) gin.HandlerFunc {
+func UpdateRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 	
 	return func(c *gin.Context) {
 

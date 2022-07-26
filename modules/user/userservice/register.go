@@ -2,7 +2,6 @@ package userservice
 
 import (
 	"context"
-	"food_delivery/components"
 	"food_delivery/modules/common"
 	"food_delivery/modules/user/usermodel"
 )
@@ -23,28 +22,28 @@ type registerBusiness struct {
 	hasher          Hasher
 }
 
-func NewRegisterBusiness(registerStorage RegisterStorage, hasher Hasher) *registerBusiness {
+func NewRegisterService(registerStorage RegisterStorage, hasher Hasher) *registerBusiness {
 	return &registerBusiness{
 		registerStorage: registerStorage,
 		hasher:          hasher,
 	}
 }
 
-func (business *registerBusiness) Register(ctx context.Context, data *usermodel.UserCreate) error {
-	user, _ := business.registerStorage.FindUser(ctx, map[string]interface{}{"email": data.Email})
+func (service *registerBusiness) Register(ctx context.Context, data *usermodel.UserCreate) error {
+	user, _ := service.registerStorage.FindUser(ctx, map[string]interface{}{"email": data.Email})
 
 	if user != nil {
 		return usermodel.ErrEmailExisted
 	}
 
-	salt := components.GenSalt(50)
+	salt := common.GenSalt(50)
 
-	data.Password = business.hasher.Hash(data.Password + salt)
+	data.Password = service.hasher.Hash(data.Password + salt)
 	data.Salt = salt
 	data.Role = "user" // hard code
 	data.Status = 1
 
-	if err := business.registerStorage.CreateUser(ctx, data); err != nil {
+	if err := service.registerStorage.CreateUser(ctx, data); err != nil {
 		return common.ErrCannotCreateEntity(usermodel.EntityName, err)
 	}
 
