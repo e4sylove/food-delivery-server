@@ -3,6 +3,7 @@ package usermodel
 import (
 	"errors"
 	"food_delivery/common"
+	"food_delivery/components/tokenprovider"
 )
 
 const EntityName = "User"
@@ -64,11 +65,11 @@ func (UserLogin) TableName() string {
 }
 
 type Account struct {
-	AccessToken  *tokenprodiver.Token `json:"access_token"`
-	RefreshToken *tokenprodiver.Token `json:"refresh_token"`
+	AccessToken  *tokenprovider.Token `json:"access_token"`
+	RefreshToken *tokenprovider.Token `json:"refresh_token"`
 }
 
-func NewAccount(at, rt *tokenprodiver.Token) *Account {
+func NewAccount(at, rt *tokenprovider.Token) *Account {
 	return &Account{
 		AccessToken:  at,
 		RefreshToken: rt,

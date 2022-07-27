@@ -35,9 +35,12 @@ func serve(db *gorm.DB, secretKey string) error {
 
 	r.Use(middleware.Recover(appCtx))
 
-	r.POST("/register", ginuser.Register(appCtx))
+	v1 := r.Group("/v1")
 
-	restaurants := r.Group("/restaurants")
+	v1.POST("/register", ginuser.Register(appCtx))
+	v1.POST("/login", ginuser.Login(appCtx))
+
+	restaurants := v1.Group("/restaurants")
 	{
 		restaurants.POST("", ginrestaurant.CreateRestaurant(appCtx))
 		restaurants.GET("/:id", ginrestaurant.GetRestaurant(appCtx))
