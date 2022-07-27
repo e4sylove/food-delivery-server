@@ -2,11 +2,9 @@ package userservice
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/user/usermodel"
 )
-
-
 
 type RegisterStorage interface {
 	FindUser(ctx context.Context, conditions map[string]interface{}, moreInfo ...string) (*usermodel.User, error)

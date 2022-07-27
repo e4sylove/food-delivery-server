@@ -1,9 +1,9 @@
 package ginuser
 
 import (
+	"food_delivery/common"
 	"food_delivery/components/appctx"
 	"food_delivery/components/hasher"
-	"food_delivery/modules/common"
 	"food_delivery/modules/user/usermodel"
 	"food_delivery/modules/user/userservice"
 	"food_delivery/modules/user/userstorage"
@@ -28,10 +28,10 @@ func Register(appCtx appctx.AppContext) func(*gin.Context) {
 		if err := service.Register(c.Request.Context(), &data); err != nil {
 			panic(err)
 		}
-		
+
 		data.Mask(false)
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.FakeId.String()))
 	}
-		
+
 }

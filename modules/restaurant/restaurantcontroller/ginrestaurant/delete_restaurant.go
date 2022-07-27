@@ -1,8 +1,8 @@
 package ginrestaurant
 
 import (
+	"food_delivery/common"
 	"food_delivery/components/appctx"
-	"food_delivery/modules/common"
 	"food_delivery/modules/restaurant/restaurantservice"
 	"food_delivery/modules/restaurant/restaurantstorage"
 	"net/http"
@@ -11,12 +11,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func DeleteRestaurant (ctx appctx.AppContext) gin.HandlerFunc {
-	
+func DeleteRestaurant(ctx appctx.AppContext) gin.HandlerFunc {
+
 	return func(c *gin.Context) {
-		
+
 		id, err := strconv.Atoi(c.Param("id"))
-		
+
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}

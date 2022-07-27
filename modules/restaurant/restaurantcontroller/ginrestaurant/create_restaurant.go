@@ -1,8 +1,8 @@
 package ginrestaurant
 
 import (
+	common2 "food_delivery/common"
 	"food_delivery/components/appctx"
-	"food_delivery/modules/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 	"food_delivery/modules/restaurant/restaurantservice"
 	"food_delivery/modules/restaurant/restaurantstorage"
@@ -11,19 +11,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func CreateRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 
 		db := appCtx.GetMySQLConnection()
-		
+
 		var data restaurantmodel.RestaurantCreate
 
 		if err := c.ShouldBind(&data); err != nil {
-			panic(common.ErrInvalidRequest(err))
+			panic(common2.ErrInvalidRequest(err))
 		}
-		
+
 		store := restaurantstorage.NewSQLStorage(db)
 		service := restaurantservice.NewCreateRestaurantService(store)
 
@@ -31,6 +30,6 @@ func CreateRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
+		c.JSON(http.StatusOK, common2.SimpleSuccessResponse(data))
 	}
 }

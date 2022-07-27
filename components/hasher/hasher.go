@@ -12,7 +12,7 @@ func NewMd5Hash() *md5Hash {
 }
 
 func (h *md5Hash) Hash(data string) string {
-	hashder := md5.New()
-	hashder.Write([]byte(data))
-	return hex.EncodeToString(hashder.Sum(nil))
+	hasher := md5.New()
+	hasher.Write([]byte(data))
+	return hex.EncodeToString(hasher.Sum(nil))
 }

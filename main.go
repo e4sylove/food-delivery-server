@@ -16,20 +16,20 @@ import (
 func main() {
 
 	dsn := helpers.GetDsn("MYSQL_CONNECTION")
-	
+	secretKey := helpers.GetSecretKey("SECRET_KEY")
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	
-	if err := serve(db); err != nil {
+
+	if err := serve(db, secretKey); err != nil {
 		log.Fatalln(err)
 	}
 }
 
-
-func serve(db *gorm.DB) error {
-	appCtx := appctx.NewAppContext(db)
+func serve(db *gorm.DB, secretKey string) error {
+	appCtx := appctx.NewAppContext(db, secretKey)
 
 	r := gin.Default()
 
@@ -46,5 +46,5 @@ func serve(db *gorm.DB) error {
 		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
 	}
 
-	return r.Run(`:8080`);
+	return r.Run(`:8080`)
 }

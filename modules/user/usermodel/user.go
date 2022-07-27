@@ -2,7 +2,7 @@ package usermodel
 
 import (
 	"errors"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 )
 
 const EntityName = "User"
@@ -35,7 +35,6 @@ func (User) TableName() string {
 	return "users"
 }
 
-
 type UserCreate struct {
 	common.SQLModel `json:",inline"`
 	Email           string        `json:"email" gorm:"column:email;"`
@@ -64,6 +63,17 @@ func (UserLogin) TableName() string {
 	return User{}.TableName()
 }
 
+type Account struct {
+	AccessToken  *tokenprodiver.Token `json:"access_token"`
+	RefreshToken *tokenprodiver.Token `json:"refresh_token"`
+}
+
+func NewAccount(at, rt *tokenprodiver.Token) *Account {
+	return &Account{
+		AccessToken:  at,
+		RefreshToken: rt,
+	}
+}
 
 var (
 	ErrUsernameOrPasswordInvalid = common.NewCustomError(

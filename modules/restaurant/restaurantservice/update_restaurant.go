@@ -2,7 +2,7 @@ package restaurantservice
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
@@ -24,11 +24,11 @@ type updateRestaurantService struct {
 	store UpdateRestaurantStore
 }
 
-func NewUpdateRestaurantService (store UpdateRestaurantStore) *updateRestaurantService {
-	return &updateRestaurantService{ store: store }
+func NewUpdateRestaurantService(store UpdateRestaurantStore) *updateRestaurantService {
+	return &updateRestaurantService{store: store}
 }
 
-func (service *updateRestaurantService) UpdateRestaurant(ctx context.Context, id int, data *restaurantmodel.RestaurantUpdate) (error) {
+func (service *updateRestaurantService) UpdateRestaurant(ctx context.Context, id int, data *restaurantmodel.RestaurantUpdate) error {
 
 	oldData, err := service.store.FindRestaurantByCondition(ctx, map[string]interface{}{"id": id})
 

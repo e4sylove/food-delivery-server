@@ -2,12 +2,11 @@ package userstorage
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/user/usermodel"
 
 	"gorm.io/gorm"
 )
-
 
 func (s *SQLStorage) FindUser(ctx context.Context, conditions map[string]interface{}, moreInfo ...string) (*usermodel.User, error) {
 	db := s.db.Table(usermodel.User{}.TableName())

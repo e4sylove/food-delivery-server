@@ -2,10 +2,9 @@ package restaurantservice
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
-
 
 type DeleteRestaurantStore interface {
 	FindRestaurantByCondition(
@@ -13,7 +12,7 @@ type DeleteRestaurantStore interface {
 		conditions map[string]interface{},
 		moreKeys ...string) (*restaurantmodel.Restaurant, error)
 
-	SoftDelete(ctx context.Context, id int) (error)
+	SoftDelete(ctx context.Context, id int) error
 }
 
 type deleteRestaurantService struct {
@@ -21,11 +20,11 @@ type deleteRestaurantService struct {
 }
 
 func NewDeleteRestaurantService(storage DeleteRestaurantStore) *deleteRestaurantService {
-	return &deleteRestaurantService{ storage: storage}
+	return &deleteRestaurantService{storage: storage}
 }
 
-func (service *deleteRestaurantService) DeleteRestaurant(ctx context.Context, id int) (error) {
-	
+func (service *deleteRestaurantService) DeleteRestaurant(ctx context.Context, id int) error {
+
 	oldData, err := service.storage.FindRestaurantByCondition(ctx, map[string]interface{}{
 		"id": id,
 	})
@@ -37,10 +36,10 @@ func (service *deleteRestaurantService) DeleteRestaurant(ctx context.Context, id
 	if oldData.Status == 0 {
 		return common.ErrEntityDeleted(restaurantmodel.EntityName, nil)
 	}
-	
+
 	if err := service.storage.SoftDelete(ctx, id); err != nil {
 		return common.ErrCannotDeleteEntity(restaurantmodel.EntityName, err)
 	}
 
 	return nil
-}	
+}

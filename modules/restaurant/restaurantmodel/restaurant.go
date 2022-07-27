@@ -2,17 +2,18 @@ package restaurantmodel
 
 import (
 	"errors"
-	"food_delivery/modules/common"
+	common2 "food_delivery/common"
 	"strings"
 )
 
 const EntityName = "Restaurant"
+
 type Restaurant struct {
-	common.SQLModel `json:",inline"`
-	Id int `json:"id"`
-	Name string `json:"name"`
-	Addr string `json:"address"`
-	Logo *common.Image `json:"logo" gorm:"column:logo;"`
+	common2.SQLModel `json:",inline"`
+	Id               int            `json:"id"`
+	Name             string         `json:"name"`
+	Addr             string         `json:"address"`
+	Logo             *common2.Image `json:"logo" gorm:"column:logo;"`
 	// City string `json:"city"`
 	// Lat float32 `json:"lat"`
 	// Lng float32 `json:"lng"`
@@ -34,11 +35,11 @@ func (RestaurantUpdate) TableName() string {
 }
 
 type RestaurantCreate struct {
-	common.SQLModel `json:",inline"`
-	Id int `json:"id" gorm:"column:id;" `
-	Name string `json:"name" gorm:"column:name;"`
-	Addr string `json:"address" gorm:"column:addr;"`
-	Logo *common.Image `json:"logo" gorm:"column:logo;"`
+	common2.SQLModel `json:",inline"`
+	Id               int            `json:"id" gorm:"column:id;" `
+	Name             string         `json:"name" gorm:"column:name;"`
+	Addr             string         `json:"address" gorm:"column:addr;"`
+	Logo             *common2.Image `json:"logo" gorm:"column:logo;"`
 }
 
 func (RestaurantCreate) TableName() string {
@@ -46,7 +47,7 @@ func (RestaurantCreate) TableName() string {
 }
 
 func (res *RestaurantCreate) Validate() error {
-	
+
 	res.Name = strings.TrimSpace(res.Name)
 
 	if len(res.Name) == 0 {
@@ -55,5 +56,3 @@ func (res *RestaurantCreate) Validate() error {
 
 	return nil
 }
-
-

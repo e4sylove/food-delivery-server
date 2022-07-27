@@ -2,7 +2,7 @@ package restaurantservice
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
@@ -15,11 +15,11 @@ type createRestaurantService struct {
 }
 
 func NewCreateRestaurantService(store CreateRestaurantStore) *createRestaurantService {
-	return &createRestaurantService{ store: store }
+	return &createRestaurantService{store: store}
 }
 
 func (service *createRestaurantService) CreateRestaurant(ctx context.Context, data *restaurantmodel.RestaurantCreate) error {
-	
+
 	if err := data.Validate(); err != nil {
 		return err
 	}

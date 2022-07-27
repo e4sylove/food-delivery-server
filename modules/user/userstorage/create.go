@@ -2,7 +2,7 @@ package userstorage
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/user/usermodel"
 )
 

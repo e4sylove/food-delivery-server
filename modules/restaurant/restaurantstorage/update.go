@@ -2,12 +2,12 @@ package restaurantstorage
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
 func (storage *SQLStorage) UpdateData(ctx context.Context, id int, data *restaurantmodel.RestaurantUpdate) error {
-	
+
 	db := storage.db
 
 	if err := db.
@@ -17,6 +17,6 @@ func (storage *SQLStorage) UpdateData(ctx context.Context, id int, data *restaur
 
 		return common.ErrDB(err)
 	}
-	
+
 	return nil
 }

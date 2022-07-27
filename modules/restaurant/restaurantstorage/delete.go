@@ -2,22 +2,22 @@ package restaurantstorage
 
 import (
 	"context"
-	"food_delivery/modules/common"
+	"food_delivery/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
 func (storage *SQLStorage) SoftDelete(
 	ctx context.Context,
 	id int,
-) (error) {
+) error {
 	db := storage.db
 
 	if err := db.
 		Table(restaurantmodel.Restaurant{}.TableName()).
 		Where("id = ?", id).
-		Updates(map[string]interface{}{ "status": 0 }).
+		Updates(map[string]interface{}{"status": 0}).
 		Error; err != nil {
-			
+
 		return common.ErrDB(err)
 	}
 
