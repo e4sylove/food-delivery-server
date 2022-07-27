@@ -12,7 +12,7 @@ type jwtProvider struct {
 
 type myClaims struct {
 	Payload tokenprovider.TokenPayload `json:"payload"`
-	jwt.Claims
+	jwt.StandardClaims
 }
 
 func NewTokenJWTProvider(secret string) *jwtProvider {
@@ -20,7 +20,7 @@ func NewTokenJWTProvider(secret string) *jwtProvider {
 }
 
 func (j *jwtProvider) Generate(data tokenprovider.TokenPayload, expiry int) (*tokenprovider.Token, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, myClaims{
+	t := jwt.NewWithClaims(jwt.SigningMethodHS256, myClaims{
 		data,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Second * time.Duration(expiry)).Unix(),
@@ -28,7 +28,7 @@ func (j *jwtProvider) Generate(data tokenprovider.TokenPayload, expiry int) (*to
 		},
 	})
 
-	myToken, err := token.SignedString([]byte(j.secret))
+	myToken, err := t.SignedString([]byte(j.secret))
 
 	if err != nil {
 		return nil, err
