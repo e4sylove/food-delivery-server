@@ -2,6 +2,7 @@ package userservice
 
 import (
 	"context"
+	"food_delivery/common"
 	"food_delivery/components/appctx"
 	"food_delivery/components/tokenprovider"
 	"food_delivery/modules/user/usermodel"
@@ -55,8 +56,17 @@ func (service *loginService) Login(ctx context.Context, data *usermodel.UserLogi
 	}
 
 	accessToken, err := service.tokenProvider.Generate(payload, service.expiry)
+
+	if err != nil {
+		return nil, common.ErrInternal(err)
+	}
+
 	refreshToken, err := service.tokenProvider.Generate(payload, service.expiry*2)
 
+	if err != nil {
+		return nil, common.ErrInternal(err)
+	}
+	
 	account := usermodel.NewAccount(accessToken, refreshToken)
 
 	return account, nil
