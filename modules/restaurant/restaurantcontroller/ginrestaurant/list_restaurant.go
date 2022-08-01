@@ -1,7 +1,7 @@
 package ginrestaurant
 
 import (
-	common2 "food_delivery/common"
+	"food_delivery/common"
 	"food_delivery/components/appctx"
 	"food_delivery/modules/restaurant/restaurantmodel"
 	"food_delivery/modules/restaurant/restaurantservice"
@@ -17,13 +17,13 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 		var filter restaurantmodel.Filter
 
 		if err := c.ShouldBind(&filter); err != nil {
-			panic(common2.ErrInvalidRequest(err))
+			panic(common.ErrInvalidRequest(err))
 		}
 
-		var paging common2.Paging
+		var paging common.Paging
 
 		if err := c.ShouldBind(&paging); err != nil {
-			panic(common2.ErrInvalidRequest(err))
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		paging.Fulfill()
@@ -37,7 +37,7 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common2.NewSuccessResponse(result, paging, filter))
+		c.JSON(http.StatusOK, common.NewSuccessResponse(result, paging, filter))
 
 	}
 }

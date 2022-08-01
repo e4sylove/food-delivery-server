@@ -2,7 +2,7 @@ package restaurantservice
 
 import (
 	"context"
-	common2 "food_delivery/common"
+	"food_delivery/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
@@ -11,7 +11,7 @@ type ListRestaurantStore interface {
 		ctx context.Context,
 		conditions map[string]interface{},
 		filter *restaurantmodel.Filter,
-		paging *common2.Paging,
+		paging *common.Paging,
 		moreKeys ...string) ([]restaurantmodel.Restaurant, error)
 }
 
@@ -26,12 +26,12 @@ func NewListRestaurantService(store ListRestaurantStore) *listRestaurantService 
 func (service *listRestaurantService) ListRestaurant(
 	ctx context.Context,
 	filter *restaurantmodel.Filter,
-	paging *common2.Paging) ([]restaurantmodel.Restaurant, error) {
+	paging *common.Paging) ([]restaurantmodel.Restaurant, error) {
 
 	result, err := service.store.ListRestaurantByCondition(ctx, nil, filter, paging)
 
 	if err != nil {
-		return nil, common2.ErrCannotListEntity(restaurantmodel.EntityName, err)
+		return nil, common.ErrCannotListEntity(restaurantmodel.EntityName, err)
 	}
 
 	return result, nil

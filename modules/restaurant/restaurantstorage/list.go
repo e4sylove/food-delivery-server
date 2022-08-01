@@ -2,7 +2,7 @@ package restaurantstorage
 
 import (
 	"context"
-	common2 "food_delivery/common"
+	"food_delivery/common"
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
@@ -10,7 +10,7 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 	ctx context.Context,
 	conditions map[string]interface{},
 	filter *restaurantmodel.Filter,
-	paging *common2.Paging,
+	paging *common.Paging,
 	moreKeys ...string) ([]restaurantmodel.Restaurant, error) {
 
 	var result []restaurantmodel.Restaurant
@@ -30,7 +30,7 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 	}
 
 	if err := db.Count(&paging.Total).Error; err != nil {
-		return nil, common2.ErrDB(err)
+		return nil, common.ErrDB(err)
 	}
 
 	if err := db.
@@ -38,11 +38,11 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 		Limit(paging.Limit).
 		Order("id DESC").
 		Find(&result).Error; err != nil {
-		return nil, common2.ErrDB(err)
+		return nil, common.ErrDB(err)
 	}
 
 	if err := db.Find(&result).Error; err != nil {
-		return nil, common2.ErrDB(err)
+		return nil, common.ErrDB(err)
 	}
 
 	return result, nil

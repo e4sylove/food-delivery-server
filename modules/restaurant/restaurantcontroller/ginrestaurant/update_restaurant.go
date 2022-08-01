@@ -1,7 +1,7 @@
 package ginrestaurant
 
 import (
-	common2 "food_delivery/common"
+	"food_delivery/common"
 	"food_delivery/components/appctx"
 	"food_delivery/modules/restaurant/restaurantmodel"
 	"food_delivery/modules/restaurant/restaurantservice"
@@ -19,13 +19,13 @@ func UpdateRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			panic(common2.ErrInvalidRequest(err))
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		var data restaurantmodel.RestaurantUpdate
 
 		if err := c.ShouldBind(&data); err != nil {
-			panic(common2.ErrInvalidRequest(err))
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		store := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
@@ -35,6 +35,6 @@ func UpdateRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common2.SimpleSuccessResponse(true))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
 	}
 }

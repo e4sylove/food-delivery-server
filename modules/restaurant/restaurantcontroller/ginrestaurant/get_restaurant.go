@@ -1,7 +1,7 @@
 package ginrestaurant
 
 import (
-	common2 "food_delivery/common"
+	"food_delivery/common"
 	"food_delivery/components/appctx"
 	"food_delivery/modules/restaurant/restaurantservice"
 	"food_delivery/modules/restaurant/restaurantstorage"
@@ -18,18 +18,18 @@ func GetRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			panic(common2.ErrInvalidRequest(err))
+			panic(common.ErrInvalidRequest(err))
 		}
 
 		store := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
-		serivce := restaurantservice.NewGetRestaurantService(store)
+		service := restaurantservice.NewGetRestaurantService(store)
 
-		result, err := serivce.GetRestaurantService(c.Request.Context(), id)
+		result, err := service.GetRestaurantService(c.Request.Context(), id)
 
 		if err != nil {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common2.SimpleSuccessResponse(result))
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(result))
 	}
 }
