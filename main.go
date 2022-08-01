@@ -5,6 +5,7 @@ import (
 	"food_delivery/helpers"
 	"food_delivery/middleware"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
+	"food_delivery/modules/upload/uploadcontroller/ginupload"
 	"food_delivery/modules/user/usercontroller/ginuser"
 	"log"
 
@@ -39,6 +40,7 @@ func serve(db *gorm.DB, secretKey string) error {
 
 	v1.POST("/register", ginuser.Register(appCtx))
 	v1.POST("/login", ginuser.Login(appCtx))
+	v1.POST("/upload", ginupload.Upload(appCtx))
 
 	restaurants := v1.Group("/restaurants")
 	{

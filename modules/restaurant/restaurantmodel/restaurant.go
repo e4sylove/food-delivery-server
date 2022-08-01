@@ -10,15 +10,11 @@ const EntityName = "Restaurant"
 
 type Restaurant struct {
 	common.SQLModel `json:",inline"`
-	Id              int           `json:"id"`
-	Name            string        `json:"name"`
-	Addr            string        `json:"address"`
-	Logo            *common.Image `json:"logo" gorm:"column:logo;"`
-	// City string `json:"city"`
-	// Lat float32 `json:"lat"`
-	// Lng float32 `json:"lng"`
-	// CreatedAt time.Time `json:"created_at"`
-	// UpdatedAt time.Time `json:"updated_at"`
+	Id              int            `json:"id"`
+	Name            string         `json:"name"`
+	Addr            string         `json:"address"`
+	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
+	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
 }
 
 func (Restaurant) TableName() string {
@@ -26,8 +22,10 @@ func (Restaurant) TableName() string {
 }
 
 type RestaurantUpdate struct {
-	Name *string `json:"name" gorm:"column:name;"`
-	Addr *string `json:"address" gorm:"column:addr;"`
+	Name  *string        `json:"name" gorm:"column:name;"`
+	Addr  *string        `json:"address" gorm:"column:addr;"`
+	Logo  *common.Image  `json:"logo" gorm:"column:logo;"`
+	Cover *common.Images `json:"cover" gorm:"column:cover;"`
 }
 
 func (RestaurantUpdate) TableName() string {
@@ -36,10 +34,11 @@ func (RestaurantUpdate) TableName() string {
 
 type RestaurantCreate struct {
 	common.SQLModel `json:",inline"`
-	Id              int           `json:"id" gorm:"column:id;" `
-	Name            string        `json:"name" gorm:"column:name;"`
-	Addr            string        `json:"address" gorm:"column:addr;"`
-	Logo            *common.Image `json:"logo" gorm:"column:logo;"`
+	Id              int            `json:"id" gorm:"column:id;" `
+	Name            string         `json:"name" gorm:"column:name;"`
+	Addr            string         `json:"address" gorm:"column:addr;"`
+	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
+	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
 }
 
 func (RestaurantCreate) TableName() string {
