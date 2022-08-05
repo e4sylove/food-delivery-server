@@ -3,6 +3,7 @@ package ginupload
 import (
 	"food_delivery/common"
 	"food_delivery/components/appctx"
+	"food_delivery/modules/upload/uploadstorage"
 	"github.com/gin-gonic/gin"
 	"mime/multipart"
 )
@@ -36,6 +37,8 @@ func Upload(appCtx appctx.AppContext) func(*gin.Context) {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		c.JSON(200, common.SimpleSuccessResponse(true))
+		imgStore := uploadstorage.NewSQLStorage(appCtx.GetMySQLConnection())
+		service := uploadservice.
+			c.JSON(200, common.SimpleSuccessResponse(true))
 	}
 }
