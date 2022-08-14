@@ -2,8 +2,9 @@ package jwt
 
 import (
 	"food_delivery/components/tokenprovider"
-	"github.com/dgrijalva/jwt-go"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 type jwtProvider struct {
@@ -40,4 +41,27 @@ func (j *jwtProvider) Generate(data tokenprovider.TokenPayload, expiry int) (*to
 		Expiry:  expiry,
 	}, nil
 
+}
+
+func (j *jwtProvider) Validate(myToken string) (*tokenprovider.TokenPayload, error) {
+	res, err := jwt.ParseWithClaims(myToken, &myClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(j.secret), nil
+	})
+
+	if err != nil {
+		return nil, tokenprovider.ErrInvalidToken
+	}
+
+	// validate the token
+	if !res.Valid {
+		return nil, tokenprovider.ErrInvalidToken
+	}
+
+	claims, ok := res.Claims.(*myClaims)
+	if !ok {
+		return nil, tokenprovider.ErrInvalidToken
+	}
+
+	// return the token
+	return &claims.Payload, nil
 }

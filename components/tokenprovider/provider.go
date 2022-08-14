@@ -8,7 +8,7 @@ import (
 
 type Provider interface {
 	Generate(data TokenPayload, expiry int) (*Token, error)
-	//Validate(token string) (*TokenPayload, error)
+	Validate(token string) (*TokenPayload, error)
 }
 
 var (

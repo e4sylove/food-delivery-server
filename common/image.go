@@ -21,6 +21,7 @@ func (Image) TableName() string {
 
 func (j *Image) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
+	
 	if !ok {
 		return errors.New(fmt.Sprint("Failed to unmarshal JSON value", value))
 	}
