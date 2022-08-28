@@ -32,6 +32,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	db = db.Debug()
+	
 	if err := serve(db, secretKey, s3Provider); err != nil {
 		log.Fatalln(err)
 	}
@@ -59,5 +61,5 @@ func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadPr
 		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
 	}
 
-	return r.Run(`:8080`)
+	return r.Run(`:3000`)
 }

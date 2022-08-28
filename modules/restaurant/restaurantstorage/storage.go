@@ -7,7 +7,5 @@ type SQLStorage struct {
 }
 
 func NewSQLStorage(db *gorm.DB) *SQLStorage {
-	return &SQLStorage{
-		db: db,
-	}
+	return &SQLStorage{db: db}
 }

@@ -8,6 +8,31 @@ import (
 
 const EntityName = "User"
 
+type UserRole int
+
+const (
+	RoleUser UserRole = 1 << iota
+	RoleAdmin
+	RoleShipper
+	RoleMod
+)
+
+func (role UserRole) String() string {
+	switch role {
+	case RoleAdmin:
+		return "admin"
+
+	case RoleShipper:
+		return "shipper"
+
+	case RoleMod:
+		return "mod"
+	
+	default:
+		return "user"
+	}
+}
+
 type User struct {
 	common.SQLModel `json:",inline"`
 	Email           string        `json:"email" gorm:"column:email;"`

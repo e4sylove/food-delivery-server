@@ -1,6 +1,7 @@
 package common
 
 import (
+	"database/sql/driver"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -15,15 +16,12 @@ type Image struct {
 	Extension string `json:"extension,omitempty" gorm:"-"`
 }
 
-func (Image) TableName() string {
-	return "images"
-}
+func (Image) TableName() string { return "images" }
 
 func (j *Image) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
-	
 	if !ok {
-		return errors.New(fmt.Sprint("Failed to unmarshal JSON value", value))
+		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
 	}
 
 	var img Image
@@ -32,8 +30,15 @@ func (j *Image) Scan(value interface{}) error {
 	}
 
 	*j = img
-
 	return nil
+}
+
+// Value return json value, implement driver.Valuer interface
+func (j *Image) Value() (driver.Value, error) {
+	if j == nil {
+		return nil, nil
+	}
+	return json.Marshal(j)
 }
 
 type Images []Image
@@ -41,7 +46,7 @@ type Images []Image
 func (j *Images) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
-		return errors.New(fmt.Sprint("Failed to unmarshal JSON value", value))
+		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
 	}
 
 	var img []Image
@@ -50,6 +55,13 @@ func (j *Images) Scan(value interface{}) error {
 	}
 
 	*j = img
-
 	return nil
+}
+
+// Value return json value, implement driver.Valuer interface
+func (j *Images) Value() (driver.Value, error) {
+	if j == nil {
+		return nil, nil
+	}
+	return json.Marshal(j)
 }
