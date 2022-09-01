@@ -3,6 +3,7 @@ package restaurantmodel
 import (
 	"errors"
 	"food_delivery/common"
+	"food_delivery/modules/user/usermodel"
 	"strings"
 )
 
@@ -15,7 +16,7 @@ type Restaurant struct {
 	Addr            string             `json:"address" gorm:"column:addr;"`
 	Logo            *common.Image      `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images     `json:"cover" gorm:"column:cover;"`
-	User            *common.SimpleUser `json:"user" gorm:"preload:false;"`
+	User            *common.SimpleUser `json:"user" gorm:"preload:false;foreignKey:UserId;"`
 	LikedCount      int                `json:"liked_count" gorm:"-"`
 }
 
@@ -36,10 +37,12 @@ func (RestaurantUpdate) TableName() string {
 
 type RestaurantCreate struct {
 	common.SQLModel `json:",inline"`
-	Name            string         `json:"name" gorm:"column:name;"`
-	Addr            string         `json:"address" gorm:"column:addr;"`
-	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
-	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
+	Name            string         	`json:"name" gorm:"column:name;"`
+	UserId          int            	`json:"-" gorm:"column:owner_id;"`
+	User 			*usermodel.User	`json:"user" gorm:"preload:false;"`
+	Addr            string         	`json:"address" gorm:"column:addr;"`
+	Logo            *common.Image  	`json:"logo" gorm:"column:logo;"`
+	Cover           *common.Images 	`json:"cover" gorm:"column:cover;"`
 }
 
 func (RestaurantCreate) TableName() string {

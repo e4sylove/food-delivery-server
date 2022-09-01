@@ -12,10 +12,11 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 	filter *restaurantmodel.Filter,
 	paging *common.Paging,
 	moreKeys ...string) ([]restaurantmodel.Restaurant, error) {
-
-	var result []restaurantmodel.Restaurant
+	
 	db := storage.db
 
+	var result []restaurantmodel.Restaurant
+	
 	for i := range moreKeys {
 		db = db.Preload(moreKeys[i])
 	}

@@ -3,7 +3,6 @@ package userservice
 import (
 	"context"
 	"food_delivery/common"
-	"food_delivery/components/appctx"
 	"food_delivery/components/tokenprovider"
 	"food_delivery/modules/user/usermodel"
 )
@@ -13,7 +12,6 @@ type LoginStorage interface {
 }
 
 type loginService struct {
-	appCtx        appctx.AppContext
 	store         LoginStorage
 	tokenProvider tokenprovider.Provider
 	hasher        Hasher

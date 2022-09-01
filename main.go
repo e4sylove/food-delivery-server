@@ -56,7 +56,7 @@ func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadPr
 	{
 		restaurants.POST("", ginrestaurant.CreateRestaurant(appCtx))
 		restaurants.GET("/:id", ginrestaurant.GetRestaurant(appCtx))
-		restaurants.GET("", ginrestaurant.ListRestaurant(appCtx))
+		restaurants.GET("", middleware.RequireAuth(appCtx), ginrestaurant.ListRestaurant(appCtx))
 		restaurants.PATCH("/:id", ginrestaurant.UpdateRestaurant(appCtx))
 		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
 	}
