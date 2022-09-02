@@ -3,7 +3,6 @@ package restaurantmodel
 import (
 	"errors"
 	"food_delivery/common"
-	"food_delivery/modules/user/usermodel"
 	"strings"
 )
 
@@ -37,12 +36,12 @@ func (RestaurantUpdate) TableName() string {
 
 type RestaurantCreate struct {
 	common.SQLModel `json:",inline"`
-	Name            string         	`json:"name" gorm:"column:name;"`
-	UserId          int            	`json:"-" gorm:"column:owner_id;"`
-	User 			*usermodel.User	`json:"user" gorm:"preload:false;"`
-	Addr            string         	`json:"address" gorm:"column:addr;"`
-	Logo            *common.Image  	`json:"logo" gorm:"column:logo;"`
-	Cover           *common.Images 	`json:"cover" gorm:"column:cover;"`
+	Name            string         `json:"name" gorm:"column:name;"`
+	UserId          int            `json:"-" gorm:"column:owner_id;"`
+	Addr            string         `json:"address" gorm:"column:addr;"`
+	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
+	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
+	User            *common.SimpleUser `json:"user" gorm:"preload:false;foreignKey:UserId;"`
 }
 
 func (RestaurantCreate) TableName() string {
@@ -59,3 +58,12 @@ func (res *RestaurantCreate) Validate() error {
 
 	return nil
 }
+
+func (data *RestaurantCreate) Mask(isAdmin bool) {
+	data.GenUID(common.DbTypeRestaurant)
+}
+
+func (data *Restaurant) Mask(isAdmin bool) {
+	data.GenUID(common.DbTypeRestaurant)
+}
+

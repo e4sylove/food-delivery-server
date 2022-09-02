@@ -33,6 +33,8 @@ func CreateRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
+		data.GenUID(common.DbTypeRestaurant)
+
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 	}
 }

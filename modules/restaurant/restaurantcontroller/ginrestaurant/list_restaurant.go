@@ -37,7 +37,10 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.NewSuccessResponse(result, paging, filter))
+		for i := range result {
+			result[i].Mask(false)
+		}
 
+		c.JSON(http.StatusOK, common.NewSuccessResponse(result, paging, filter))
 	}
 }

@@ -25,5 +25,10 @@ func (service *createRestaurantService) CreateRestaurant(ctx context.Context, da
 	}
 
 	err := service.store.Create(ctx, data)
-	return common.ErrCannotCreateEntity(restaurantmodel.EntityName, err)
+
+	if err != nil {
+		return common.ErrCannotCreateEntity(restaurantmodel.EntityName, err)
+	}
+
+	return nil	
 }

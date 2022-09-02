@@ -52,7 +52,7 @@ func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadPr
 	v1.POST("/login", ginuser.Login(appCtx))
 	// v1.POST("/upload", ginupload.Upload(appCtx))
 	v1.GET("/profile", middleware.RequireAuth(appCtx), ginuser.GetProfile(appCtx))
-	restaurants := v1.Group("/restaurants")
+	restaurants := v1.Group("/restaurants", middleware.RequireAuth(appCtx))
 	{
 		restaurants.POST("", ginrestaurant.CreateRestaurant(appCtx))
 		restaurants.GET("/:id", ginrestaurant.GetRestaurant(appCtx))
