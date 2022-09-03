@@ -15,12 +15,17 @@ type ListRestaurantStore interface {
 		moreKeys ...string) ([]restaurantmodel.Restaurant, error)
 }
 
-type listRestaurantService struct {
-	store ListRestaurantStore
+type LikeStore interface {
+	ListRestaurantLikes (ctx context.Context, ids []int) (map[int]int, error)
 }
 
-func NewListRestaurantService(store ListRestaurantStore) *listRestaurantService {
-	return &listRestaurantService{store: store}
+type listRestaurantService struct {
+	store ListRestaurantStore
+	likeStore LikeStore
+}
+ 
+func NewListRestaurantService(store ListRestaurantStore, likeStore LikeStore) *listRestaurantService {
+	return &listRestaurantService{store: store, likeStore: likeStore}
 }
 
 func (service *listRestaurantService) ListRestaurant(
@@ -32,6 +37,20 @@ func (service *listRestaurantService) ListRestaurant(
 
 	if err != nil {
 		return nil, common.ErrCannotListEntity(restaurantmodel.EntityName, err)
+	}
+
+	ids := make([]int, len(result))
+
+	for i, restaurant := range result {
+		ids[i] = restaurant.Id
+	}
+
+	mapResLike, err := service.likeStore.ListRestaurantLikes(ctx, ids)
+
+	if v := mapResLike; v != nil {
+		for i, item := range result {
+			result[i].LikedCount = mapResLike[item.Id]
+		}
 	}
 
 	return result, nil

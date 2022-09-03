@@ -34,6 +34,12 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 		return nil, common.ErrDB(err)
 	}
 
+	if paging.FakeCursor != "" {
+		if uid, err := common.FromBase58(paging.NextCursor); err == nil {
+			db = db.Where("id > ?", uid.GetLocalID())
+		}
+	}
+
 	if err := db.
 		Offset((paging.Page - 1) * paging.Limit).
 		Limit(paging.Limit).
