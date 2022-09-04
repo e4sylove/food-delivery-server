@@ -13,6 +13,7 @@ type Restaurant struct {
 	common.SQLModel `json:",inline"`
 	Name            string             `json:"name" gorm:"column:name;"`
 	UserId          int                `json:"-" gorm:"column:owner_id;"`
+	FakeOwnerId 	*common.UID		   `json:"owner_id"`
 	Addr            string             `json:"address" gorm:"column:addr;"`
 	Logo            *common.Image      `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images     `json:"cover" gorm:"column:cover;"`
@@ -38,7 +39,7 @@ func (RestaurantUpdate) TableName() string {
 type RestaurantCreate struct {
 	common.SQLModel `json:",inline"`
 	Name            string         `json:"name" gorm:"column:name;"`
-	UserId          int            `json:"-" gorm:"column:owner_id;"`
+	UserId          int            `json:"owner_id" gorm:"column:owner_id;"`
 	Addr            string         `json:"address" gorm:"column:addr;"`
 	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
@@ -66,9 +67,12 @@ func (data *RestaurantCreate) Mask(isAdmin bool) {
 
 func (data *Restaurant) Mask(isAdmin bool) {
 	data.GenUID(common.DbTypeRestaurant)
-
+	
 	if u := data.User; u != nil {
 		u.Mask(isAdmin)
 	}
+
+	fakeId := common.NewUID(uint32(data.UserId), common.DbTypeUser, 1)
+	data.FakeOwnerId = &fakeId
 }
 

@@ -54,7 +54,7 @@ func RequireAuth(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		user, err := store.FindUser(c.Request.Context(), map[string]interface{}{"id": payload.UserId})
+		user, err := store.FindUser(c.Request.Context(), map[string]interface{}{"id": payload.UserId()})
 
 		if err != nil {
 			panic(err)
@@ -64,7 +64,7 @@ func RequireAuth(appCtx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrNoPermission(errors.New("user has been deleted or banned")))
 		}
 
-		user.Mask(false)
+		user.Mask(common.DbTypeUser)
 
 		c.Set(common.CurrentUser, user)
 		c.Next()

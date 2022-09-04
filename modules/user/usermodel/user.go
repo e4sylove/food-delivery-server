@@ -61,7 +61,7 @@ func (User) TableName() string {
 	return "users"
 }
 
-func (u *User) Mask(isAdmin bool) {
+func (u *User) Mask(dbType int) {
 	u.GenUID(common.DbTypeUser)
 }
 type UserCreate struct {

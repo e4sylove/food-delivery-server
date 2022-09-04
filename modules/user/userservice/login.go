@@ -49,8 +49,8 @@ func (service *loginService) Login(ctx context.Context, data *usermodel.UserLogi
 	}
 
 	payload := tokenprovider.TokenPayload{
-		UserId: user.Id,
-		Role:   user.Role,
+		UID: user.Id,
+		URole:   user.Role,
 	}
 
 	accessToken, err := service.tokenProvider.Generate(payload, service.expiry)
