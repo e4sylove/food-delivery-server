@@ -12,14 +12,10 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 	filter *restaurantmodel.Filter,
 	paging *common.Paging,
 	moreKeys ...string) ([]restaurantmodel.Restaurant, error) {
-	
-	db := storage.db
 
 	var result []restaurantmodel.Restaurant
-	
-	for i := range moreKeys {
-		db = db.Preload(moreKeys[i])
-	}
+
+	db := storage.db
 
 	db = db.Table(restaurantmodel.Restaurant{}.TableName()).
 		Where(conditions).Where("status in (1)")
@@ -34,21 +30,22 @@ func (storage *SQLStorage) ListRestaurantByCondition(
 		return nil, common.ErrDB(err)
 	}
 
-	if paging.FakeCursor != "" {
-		if uid, err := common.FromBase58(paging.NextCursor); err == nil {
-			db = db.Where("id > ?", uid.GetLocalID())
+	for i := range moreKeys {
+		db = db.Preload(moreKeys[i])
+	}
+
+	if v := paging.FakeCursor; v != "" {
+		if uid, err := common.FromBase58(v); err == nil {
+			db = db.Where("id < ?", uid.GetLocalID())
 		}
+	} else {
+		db = db.Offset((paging.Page - 1) * paging.Limit)
 	}
 
 	if err := db.
-		Offset((paging.Page - 1) * paging.Limit).
 		Limit(paging.Limit).
-		Order("id DESC").
+		Order("id desc").
 		Find(&result).Error; err != nil {
-		return nil, common.ErrDB(err)
-	}
-
-	if err := db.Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
 

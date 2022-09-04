@@ -3,6 +3,7 @@ package restaurantmodel
 import (
 	"errors"
 	"food_delivery/common"
+	"food_delivery/modules/user/usermodel"
 	"strings"
 )
 
@@ -15,8 +16,8 @@ type Restaurant struct {
 	Addr            string             `json:"address" gorm:"column:addr;"`
 	Logo            *common.Image      `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images     `json:"cover" gorm:"column:cover;"`
-	User            *common.SimpleUser `json:"user" gorm:"preload:false;foreignKey:UserId;"`
-	LikedCount      int                `json:"liked_count" gorm:"-"`
+	User            *common.SimpleUser `json:"user" gorm:"preload:false;"`
+	LikedCount      int                `json:"liked_count" gorm:"liked_count"`
 }
 
 func (Restaurant) TableName() string {
@@ -41,7 +42,7 @@ type RestaurantCreate struct {
 	Addr            string         `json:"address" gorm:"column:addr;"`
 	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
-	User            *common.SimpleUser `json:"user" gorm:"preload:false;foreignKey:UserId;"`
+	User            *usermodel.User `json:"user" gorm:"preload:false;foreignKey:UserId;"`
 }
 
 func (RestaurantCreate) TableName() string {
@@ -65,5 +66,9 @@ func (data *RestaurantCreate) Mask(isAdmin bool) {
 
 func (data *Restaurant) Mask(isAdmin bool) {
 	data.GenUID(common.DbTypeRestaurant)
+
+	if u := data.User; u != nil {
+		u.Mask(isAdmin)
+	}
 }
 

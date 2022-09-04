@@ -21,12 +21,14 @@ func (storage *SQLStorage) FindRestaurantByCondition(
 		db = db.Preload(moreKeys[i])
 	}
 
-	if err := db.Where(conditions).First(&result).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return nil, common.RecordNotFound
-		}
+	if err := db.
+		Table(restaurantmodel.Restaurant{}.TableName()).
+		Where(conditions).First(&result).Error; err != nil {
+			if err == gorm.ErrRecordNotFound {
+				return nil, common.RecordNotFound
+			}
 
-		return nil, common.ErrDB(err)
+			return nil, common.ErrDB(err)
 	}
 
 	return &result, nil

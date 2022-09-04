@@ -33,7 +33,7 @@ func (service *listRestaurantService) ListRestaurant(
 	filter *restaurantmodel.Filter,
 	paging *common.Paging) ([]restaurantmodel.Restaurant, error) {
 
-	result, err := service.store.ListRestaurantByCondition(ctx, nil, filter, paging)
+	result, err := service.store.ListRestaurantByCondition(ctx, nil, filter, paging, "User")
 
 	if err != nil {
 		return nil, common.ErrCannotListEntity(restaurantmodel.EntityName, err)

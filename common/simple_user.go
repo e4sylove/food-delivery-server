@@ -7,3 +7,11 @@ type SimpleUser struct {
 	Role      string `json:"role" gorm:"column:role;"`
 	Avatar    *Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
+
+func (user *SimpleUser) Mask(isAdmin bool) {
+	user.GenUID(DbTypeUser)
+}
+
+func(SimpleUser) TableName() string {
+	return "users"
+}
