@@ -12,12 +12,12 @@ const EntityName = "Restaurant"
 type Restaurant struct {
 	common.SQLModel `json:",inline"`
 	Name            string             `json:"name" gorm:"column:name;"`
-	UserId          int                `json:"-" gorm:"column:owner_id;"`
+	Owner_Id          int                `json:"-" gorm:"column:owner_id;"`
 	FakeOwnerId 	*common.UID		   `json:"owner_id"`
 	Addr            string             `json:"address" gorm:"column:addr;"`
 	Logo            *common.Image      `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images     `json:"cover" gorm:"column:cover;"`
-	User            *common.SimpleUser `json:"user" gorm:"preload:false;"`
+	Owner            *common.SimpleUser `json:"user" gorm:"preload:false;"`
 	LikedCount      int                `json:"liked_count" gorm:"liked_count"`
 }
 
@@ -68,11 +68,11 @@ func (data *RestaurantCreate) Mask(isAdmin bool) {
 func (data *Restaurant) Mask(isAdmin bool) {
 	data.GenUID(common.DbTypeRestaurant)
 	
-	if u := data.User; u != nil {
+	if u := data.Owner; u != nil {
 		u.Mask(isAdmin)
 	}
 
-	fakeId := common.NewUID(uint32(data.UserId), common.DbTypeUser, 1)
+	fakeId := common.NewUID(uint32(data.Owner_Id), common.DbTypeUser, 1)
 	data.FakeOwnerId = &fakeId
 }
 

@@ -6,26 +6,21 @@ import (
 	"food_delivery/modules/restaurant/restaurantmodel"
 )
 
-type ListRestaurantStore interface {
-	ListRestaurantByCondition(
+type listRestaurantRepo interface {
+	ListRestaurant(
 		ctx context.Context,
-		conditions map[string]interface{},
 		filter *restaurantmodel.Filter,
-		paging *common.Paging,
-		moreKeys ...string) ([]restaurantmodel.Restaurant, error)
-}
-
-type LikeStore interface {
-	ListRestaurantLikes (ctx context.Context, ids []int) (map[int]int, error)
+		paging *common.Paging) ([]restaurantmodel.Restaurant, error)
 }
 
 type listRestaurantService struct {
-	store ListRestaurantStore
-	likeStore LikeStore
+	repo listRestaurantRepo
 }
  
-func NewListRestaurantService(store ListRestaurantStore, likeStore LikeStore) *listRestaurantService {
-	return &listRestaurantService{store: store, likeStore: likeStore}
+func NewListRestaurantService(repo listRestaurantRepo) *listRestaurantService {
+	return &listRestaurantService{
+		repo: repo, 
+	}
 }
 
 func (service *listRestaurantService) ListRestaurant(
@@ -33,24 +28,10 @@ func (service *listRestaurantService) ListRestaurant(
 	filter *restaurantmodel.Filter,
 	paging *common.Paging) ([]restaurantmodel.Restaurant, error) {
 
-	result, err := service.store.ListRestaurantByCondition(ctx, nil, filter, paging, "User")
+	result, err := service.repo.ListRestaurant(ctx, filter, paging)
 
 	if err != nil {
 		return nil, common.ErrCannotListEntity(restaurantmodel.EntityName, err)
-	}
-
-	ids := make([]int, len(result))
-
-	for i, restaurant := range result {
-		ids[i] = restaurant.Id
-	}
-
-	mapResLike, err := service.likeStore.ListRestaurantLikes(ctx, ids)
-
-	if v := mapResLike; v != nil {
-		for i, item := range result {
-			result[i].LikedCount = mapResLike[item.Id]
-		}
 	}
 
 	return result, nil
