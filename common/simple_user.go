@@ -8,8 +8,8 @@ type SimpleUser struct {
 	Avatar    *Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
 
-func (user *SimpleUser) Mask(isAdmin bool) {
-	user.GenUID(DbTypeUser)
+func (user *SimpleUser) Mask(DBType int) {
+	user.GenUID(DBType)
 }
 
 func(SimpleUser) TableName() string {

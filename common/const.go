@@ -7,6 +7,7 @@ const (
 	DbTypeUser       = 4
 )
 
+const DBMain = "mysql"
 const CurrentUser = "user"
 
 type Requester interface {

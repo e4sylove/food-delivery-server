@@ -7,6 +7,7 @@ import (
 	"food_delivery/middleware"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
 	"food_delivery/modules/user/usercontroller/ginuser"
+	"food_delivery/modules/user/usercontroller/internalapi"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -59,6 +60,11 @@ func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadPr
 		restaurants.GET("", ginrestaurant.ListRestaurant(appCtx))
 		restaurants.PATCH("/:id", ginrestaurant.UpdateRestaurant(appCtx))
 		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
+	}
+
+	internal := r.Group("/internal")
+	{
+		internal.POST("/get-users-by-ids", internalapi.GetUserById(appCtx))
 	}
 
 	return r.Run(`:3000`)

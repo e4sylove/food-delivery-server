@@ -1,6 +1,9 @@
 package common
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type SQLModel struct {
 	Id        int        `json:"-" gorm:"column:id;"`
@@ -10,7 +13,19 @@ type SQLModel struct {
 	UpdatedAt *time.Time `json:"updated_at" gorm:"updated_at"`
 }
 
-func (m *SQLModel) GenUID(dbType int) {
-	uid := NewUID(uint32(m.Id), int(dbType), 1)
-	m.FakeId = &uid
+func (sqlModel *SQLModel) GenUID(dbType int) {
+	uid := NewUID(uint32(sqlModel.Id), int(dbType), 1)
+	sqlModel.FakeId = &uid
+
+	fmt.Println(sqlModel.FakeId)
+	fmt.Println(sqlModel.FakeId.GetLocalID())
+
+}
+
+func (sqlModel *SQLModel) GetRealId() {
+	if sqlModel.FakeId == nil {
+		return
+	}
+
+	sqlModel.Id = int(sqlModel.FakeId.GetLocalID())
 }

@@ -69,7 +69,7 @@ func (data *Restaurant) Mask(isAdmin bool) {
 	data.GenUID(common.DbTypeRestaurant)
 	
 	if u := data.Owner; u != nil {
-		u.Mask(isAdmin)
+		u.Mask(common.DbTypeUser)
 	}
 
 	fakeId := common.NewUID(uint32(data.Owner_Id), common.DbTypeUser, 1)
