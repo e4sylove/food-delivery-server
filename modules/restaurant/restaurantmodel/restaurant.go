@@ -10,14 +10,14 @@ import (
 const EntityName = "Restaurant"
 
 type Restaurant struct {
-	common.SQLModel `json:",inline"`
+	common.SQLModel                    `json:",inline"`
 	Name            string             `json:"name" gorm:"column:name;"`
-	Owner_Id          int                `json:"-" gorm:"column:owner_id;"`
+	Owner_Id        int                `json:"-" gorm:"column:owner_id;"`
 	FakeOwnerId 	*common.UID		   `json:"owner_id"`
 	Addr            string             `json:"address" gorm:"column:addr;"`
 	Logo            *common.Image      `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images     `json:"cover" gorm:"column:cover;"`
-	Owner            *common.SimpleUser `json:"user" gorm:"preload:false;"`
+	Owner           *common.SimpleUser `json:"user" gorm:"preload:false;"`
 	LikedCount      int                `json:"liked_count" gorm:"liked_count"`
 }
 

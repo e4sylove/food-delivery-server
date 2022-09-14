@@ -2,21 +2,23 @@ package main
 
 import (
 	"food_delivery/components/appctx"
-	"food_delivery/components/uploadprovider"
 	"food_delivery/helpers"
+	"log"
+
+	"food_delivery/components/uploadprovider"
 	"food_delivery/middleware"
+	"food_delivery/modules/categories/categorycontroller"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
 	"food_delivery/modules/user/usercontroller/ginuser"
 	"food_delivery/modules/user/usercontroller/internalapi"
-	"log"
 
 	"github.com/gin-gonic/gin"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func main() {
-
 	dsn := helpers.GetDsn("MYSQL_CONNECTION")
 	secretKey := helpers.GetSecretKey("SECRET_KEY")
 
@@ -38,6 +40,12 @@ func main() {
 	if err := serve(db, secretKey, s3Provider); err != nil {
 		log.Fatalln(err)
 	}
+
+	// service := goservice.New(
+	// 	goservice.WithName("food-delivery"),
+	// 	goservice.WithInitRunnable(sdkgorm.NewGormDB("main", common.DBMain)),
+	// 	goservice.WithInitRunnable(jwt.NewTokenJWTProvider(common.JWTProvider)),
+	// )
 }
 
 func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadProvider) error {
@@ -53,6 +61,8 @@ func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadPr
 	v1.POST("/login", ginuser.Login(appCtx))
 	// v1.POST("/upload", ginupload.Upload(appCtx))
 	v1.GET("/profile", middleware.RequireAuth(appCtx), ginuser.GetProfile(appCtx))
+
+	
 	restaurants := v1.Group("/restaurants", middleware.RequireAuth(appCtx))
 	{
 		restaurants.POST("", ginrestaurant.CreateRestaurant(appCtx))
@@ -60,11 +70,18 @@ func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadPr
 		restaurants.GET("", ginrestaurant.ListRestaurant(appCtx))
 		restaurants.PATCH("/:id", ginrestaurant.UpdateRestaurant(appCtx))
 		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
+
+		// restaurants.POST("/:id/like", handlers ...gin.HandlerFunc)
 	}
 
 	internal := r.Group("/internal")
 	{
 		internal.POST("/get-users-by-ids", internalapi.GetUserById(appCtx))
+	}
+
+	categories := v1.Group("/categories")
+	{
+		categories.GET("/", categorycontroller.ListCategories(appCtx))
 	}
 
 	return r.Run(`:3000`)

@@ -7,8 +7,8 @@ import (
 	"food_delivery/modules/restaurant/restaurantrepo"
 	"food_delivery/modules/restaurant/restaurantservice"
 	"food_delivery/modules/restaurant/restaurantstorage"
-	"food_delivery/modules/restaurant/restaurantstorage/remoteapi"
 	"food_delivery/modules/restaurantlike/restaurantlikestorage"
+	"food_delivery/modules/user/userstorage"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,8 +33,8 @@ func ListRestaurant(appCtx appctx.AppContext) gin.HandlerFunc {
 
 		restaurantStore := restaurantstorage.NewSQLStorage(appCtx.GetMySQLConnection())
 		likeStore := restaurantlikestorage.NewSQLStorage(appCtx.GetMySQLConnection())
-		// userStore := userstorage.NewSQLStorage(appCtx.GetMySQLConnection())
-		userStore :=  remoteapi.NewUserAPI("http://localhost:3000")
+		userStore := userstorage.NewSQLStorage(appCtx.GetMySQLConnection())
+		// userStore :=  remoteapi.NewUserAPI("http://localhost:3000")
 
 		repository := restaurantrepo.NewListRestaurantRepo(restaurantStore, userStore, likeStore)
 		service := restaurantservice.NewListRestaurantService(repository)

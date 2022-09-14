@@ -7,11 +7,15 @@ const (
 	DbTypeUser       = 4
 )
 
-const DBMain = "mysql"
-const CurrentUser = "user"
-
 type Requester interface {
 	GetUserId() int
 	GetEmail() string
 	GetRole() string
 }
+
+const (
+	CurrentUser = "user"
+
+	DBMain      = "mysql"
+	JWTProvider = "jwt"
+)
