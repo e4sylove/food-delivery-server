@@ -17,8 +17,8 @@ func (storage *SQLStorage) ListRestaurantLikes(ctx context.Context, ids []int) (
 
 	var listLike []sqlData
 	if err := storage.db.Table(restaurantlikemodel.Like{}.TableName()).
-		Select("restaurant_id", "count(restaurant_id) as count").
-		Where("restaurant_id in (?)", ids). 
+		Select("restaurant_id", "count(restaurant_id) AS count").
+		Where("restaurant_id IN (?)", ids). 
 		Group("restaurant_id").
 		Find(&listLike).Error; err != nil {
 			return nil, err

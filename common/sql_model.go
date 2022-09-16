@@ -1,7 +1,6 @@
 package common
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -16,10 +15,6 @@ type SQLModel struct {
 func (sqlModel *SQLModel) GenUID(dbType int) {
 	uid := NewUID(uint32(sqlModel.Id), int(dbType), 1)
 	sqlModel.FakeId = &uid
-
-	fmt.Println(sqlModel.FakeId)
-	fmt.Println(sqlModel.FakeId.GetLocalID())
-
 }
 
 func (sqlModel *SQLModel) GetRealId() {

@@ -80,8 +80,7 @@ func serve(db *gorm.DB,
 		restaurants.PATCH("/:id", ginrestaurant.UpdateRestaurant(appCtx))
 		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
 		restaurants.POST("/:id/like", restaurantlikecontroller.UserLikeRestaurant(appCtx))
-
-		// restaurants.POST("/:id/like", handlers ...gin.HandlerFunc)
+		restaurants.DELETE("/:id/dislike", restaurantlikecontroller.UseDislikeRestaurant(appCtx))
 	}
 
 	internal := r.Group("/internal")

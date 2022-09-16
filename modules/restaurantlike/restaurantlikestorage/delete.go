@@ -11,9 +11,11 @@ func (storage *SQLStorage) Delete(context context.Context, userId, restaurantId 
 
 	db := storage.db
 
-	if err := db.Table(restaurantlikemodel.Like{}.TableName()).Where("restaurant_id = (?) and user_id = (?)", restaurantId, userId).Delete(nil).Error; err != nil {
-		return common.ErrDB(err)
-	}
+	if err := db.Table(restaurantlikemodel.Like{}.TableName()).
+		Where("restaurant_id = (?) AND user_id = (?)", restaurantId, userId).
+		Delete(nil).Error; err != nil {
+			return common.ErrDB(err)
+		}
 
 	return nil
 }
