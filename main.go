@@ -2,6 +2,7 @@ package main
 
 import (
 	"food_delivery/components/appctx"
+	"food_delivery/components/cache"
 	"food_delivery/helpers"
 	"log"
 
@@ -9,10 +10,12 @@ import (
 	"food_delivery/middleware"
 	"food_delivery/modules/categories/categorycontroller"
 	"food_delivery/modules/restaurant/restaurantcontroller/ginrestaurant"
+	"food_delivery/modules/restaurantlike/restaurantlikecontroller"
 	"food_delivery/modules/user/usercontroller/ginuser"
 	"food_delivery/modules/user/usercontroller/internalapi"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -35,9 +38,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	redis := cache.NewRedisClient();
+
 	db = db.Debug()
 	
-	if err := serve(db, secretKey, s3Provider); err != nil {
+	if err := serve(db, secretKey, s3Provider, redis); err != nil {
 		log.Fatalln(err)
 	}
 
@@ -48,8 +53,12 @@ func main() {
 	// )
 }
 
-func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadProvider) error {
-	appCtx := appctx.NewAppContext(db, secretKey, uploadProvider)
+func serve(db *gorm.DB, 
+	secretKey string, 
+	uploadProvider uploadprovider.UploadProvider, 
+	redis *redis.Client) error {
+		
+	appCtx := appctx.NewAppContext(db, secretKey, uploadProvider, redis)
 
 	r := gin.Default()
 
@@ -70,6 +79,7 @@ func serve(db *gorm.DB, secretKey string, uploadProvider uploadprovider.UploadPr
 		restaurants.GET("", ginrestaurant.ListRestaurant(appCtx))
 		restaurants.PATCH("/:id", ginrestaurant.UpdateRestaurant(appCtx))
 		restaurants.DELETE("/:id", ginrestaurant.DeleteRestaurant(appCtx))
+		restaurants.POST("/:id/like", restaurantlikecontroller.UserLikeRestaurant(appCtx))
 
 		// restaurants.POST("/:id/like", handlers ...gin.HandlerFunc)
 	}

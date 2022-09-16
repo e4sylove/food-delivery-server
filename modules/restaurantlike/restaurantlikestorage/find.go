@@ -33,8 +33,8 @@ func (storage *SQLStorage) CheckUserLike(context context.Context, userId, restau
 	db := storage.db
 
 	if err := db.Table(restaurantlikemodel.Like{}.TableName()).
-		Where("user_id = (?) and restaurant_id = (?)", userId, restaurantId).
-		First(data).Error; err != nil {
+		Where("user_id = ? AND restaurant_id = ?", userId, restaurantId).
+		First(&data).Error; err != nil {
 			if err == gorm.ErrRecordNotFound {
 				return false, common.ErrRecordNotFound
 			}

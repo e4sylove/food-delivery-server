@@ -8,7 +8,10 @@ import (
 
 
 type ListCategoriesStore interface {
-	ListCategories(ctx context.Context, conditions map[string]interface{}, moreKeys ...string) ([]categorymodel.Categories, error)
+	ListCategories(
+		ctx context.Context, 
+		conditions map[string]interface{}, 
+		moreKeys ...string) ([]categorymodel.Categories, error)
 }
 
 type listCategoriesService struct {
@@ -21,7 +24,8 @@ func NewCategoriesService(store ListCategoriesStore) *listCategoriesService {
 }
 
 
-func (service *listCategoriesService) ListCategories(ctx context.Context) ([]categorymodel.Categories, error) {
+func (service *listCategoriesService) ListCategories(ctx context.Context) (
+	[]categorymodel.Categories, error) {
 	categories, err:= service.store.ListCategories(ctx, nil) 
 
 	if err != nil {
