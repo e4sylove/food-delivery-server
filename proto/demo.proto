@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package demo;
+
+option go_package = "demo/";
+
+
+message RestaurantLikeStatRequest {
+    repeated int32 resIds = 1;
+}
+
+message RestaurantLikeStatResponse {
+    map<int32, int32> result = 1;
+}
+
+
+service RestaurantLikeService {
+    rpc GetRestaurantLikeStat (RestaurantLikeStatRequest) returns (RestaurantLikeStatResponse) {};
+}
